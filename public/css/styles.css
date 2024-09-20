@@ -43,12 +43,72 @@
   /* highlights */
   --highlight-color: var(--accent-three);
 
+  /* SET MARGIN AND PADDING */
+  --base-margin: .5rem;
+  --base-padding: .5rem;
+  --large-margin: 1rem;
+  --large-padding: 1rem;
+
+  /* SET FONT-SIZE */
+  --base-font-size: 14px;
+  --large-font-size: 16px;
+}
+
+/******** DEFAULT STYLING ***********/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--heading-text-color);
+}
+
+h1,
+h2 {
+  font-family: var(--heading-font-one);
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--heading-font-two);
 }
 
 /******** Default Body View *********/
 body {
   max-width: 1600px;
   margin: 0 auto;
-  font-size: 14px;
-  /* overflow: auto; */
+  font-family: var(--paragraph-font);
+  font-size: var(--base-font-size);
+  background-color: var(--background-color-primary);
+  color: var(--body-text-color);
+}
+
+/***** STYLING HEADER *******/
+#top-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: var(--base-padding);
+  width: 100%;
+}
+
+.siteName {
+  width: 100%;
+  padding: var(--base-padding) 0;
+  display: block;
+  align-content: center;
+}
+
+.siteName a {
+  font-size: 2.5em;
+}
+
+#tools {
+  width: 100%;
+}
+
+#tools a {
+  text-align: right;
 }
