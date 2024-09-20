@@ -4,3 +4,46 @@
 *:after {
   box-sizing: border-box;
 }
+
+/******* Set Root Base *****************/
+:root {
+  /* Major Colors */
+  --primary-color: #062f56;
+  --primary-color2: rgba(0, 0, 0, 0.6);
+  --primary-color3: rgba(0, 0, 0, 1);
+  --primary-color4: rgba(0, 0, 0, 0.8);
+  --secondary-color: #3c6997;
+  --accent-one: #ff9100;
+  /* --accent-one: #ffb452; */
+  --accent-two: #5ADBFF;
+  --accent-three: #f8f9fd;
+  --accent-four: rgb(236, 241, 255);
+
+  /* Major Fonts */
+  --heading-font-one: "Lugrasimo", cursive;
+  --heading-font-two: "Kanit", sans-serif;
+  --paragraph-font: "Open Sans", sans-serif;
+
+  /* Color Division */
+  --headline-color-on-white: var(--primary-color);
+  /* headlines on a white background */
+  --headline-color-on-color: var(--accent-three);
+  /* headlines on a colored background */
+  --paragraph-color-on-white: var(--primary-color);
+  /* paragraph text on a white background */
+  --paragraph-color-on-color: var(--accent-three);
+  /* paragraph text on a colored background */
+  --paragraph-background-color: var(--accent-three);
+  --nav-link-color: var(--accent-one);
+  --nav-background-color: var(--primary-color);
+  --nav-hover-link-color: var(--accent-three);
+  --nav-hover-background-color: var(--secondary-color);
+}
+
+/******** Default Body View *********/
+body {
+  max-width: 1600px;
+  margin: 0 auto;
+  font-size: 14px;
+  /* overflow: auto; */
+}

@@ -24,7 +24,7 @@ app.set("layout", "./layouts/layout")  // not at views root
 app.use(static)
 // Index route
 app.get("/", function(req, res){
-  res.render("index", {title: "Home"})
+  res.render("index", {title: "Home", description: "CSE 340 Backend Development Motor Web Application"})
 })
 
 /* ***********************
