@@ -10,38 +10,68 @@
   /* Major Colors */
   --primary-color-one: #000000;
   --primary-color-two: #FF0000;
-  --primary-color-three: #C0C0C0;
+  --primary-color-two-darker: #a30000;
+  --primary-color-two-lighter: #FF6666;
+  --primary-color-three: #414040;
 
-  --secondary-color-one: #7B7B7B;
-
+  --secondary-color-one: #faf9f9;
 
   --accent-one: #FFFFFF;
   --accent-two: #00BFFF;
   --accent-three: #FFD700;
+
+  --dark-transparency: rgba(0, 0, 0, 0.8);
+  --light-transparency: rgba(255, 255, 255, 0.8);
 
   /* Major Fonts */
   --heading-font-one: "Bebas Neue", sans-serif;
   --heading-font-two: "Racing Sans One", system-ui;
   --paragraph-font: "Roboto", sans-serif;
 
-  /* Color Division */
-  /* background-colors */
-  --background-color-primary: var(--primary-color-one);
-  --background-color-secondary: var(--secondary-color-one);
+  /* COLOR DIVISION */
+  /* Header and Navigation Bar */
+  --header-background-color: var(--primary-color-one);
+  --header-text-color: var(--accent-one);
+  --navigation-active-link: var(--primary-color-two);
+
+  /* Main Content (Body Section) */
+  /* background color */
+  --main-background-color: var(--primary-color-three);
 
   /* text colors */
-  --heading-text-color: var(--accent-one);
-  --body-text-color: var(--primary-color-three);
+  --heading-text-color: var(--primary-color-two);
+  --body-text-color: var(--secondary-color-one);
+  --link-color: var(--accent-two);
+  --link-active-color: var(--primary-color-two);
 
-  /* button colors */
-  --button-background-color: var(--primary-color-two);
-  --hover-button-background-color: var(--accent-two);
+  /* primary button colors */
+  --primary-button-background-color: var(--primary-color-two-darker);
+  --primary-button-text-color: var(--accent-one);
+
+  /* secondary button colors */
+  --secondary-button-background-color: var(--accent-two);
+  --secondary-button-text-color: var(--accent-one);
+
+  /* FOOTER COLOR */
+  --footer-background-color: var(--primary-color-one);
+  --footer-text-color: var(--accent-one);
+  --footer-link-color: var(--accent-three);
+
+  /* ACCENT AREAS (Notification banners, hover effects) */
+  /* background */
+  --accent-background: var(--accent-three);
+  /* links or buttons hover effects */
+  --hover-background-color: var(--primary-color-two-lighter);
 
   /* borders and dividers */
   --border-color: var(--secondary-color-one);
 
-  /* highlights */
-  --highlight-color: var(--accent-three);
+  /* OTHERS (icons and font-awesome) */
+  --icon-color-one: var(--accent-one);
+  --icon-color-two: var(--accent-three);
+  --icon-color-three: var(--primary-color-three);
+
+
 
   /* SET MARGIN AND PADDING */
   --base-margin: .5rem;
@@ -52,6 +82,16 @@
   /* SET FONT-SIZE */
   --base-font-size: 14px;
   --large-font-size: 16px;
+
+  /* SET BOX RADIUS */
+  --tiny-radius: 5px;
+  --standard-radius: 10px;
+  --larger-radius: 15px;
+}
+
+/******* TEST USE ONLY *******/
+* {
+  /* border: 1px solid var(--border-color); */
 }
 
 /******** DEFAULT STYLING ***********/
@@ -61,7 +101,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: var(--heading-text-color);
+  color: var(--header-text-color);
 }
 
 h1,
@@ -76,22 +116,90 @@ h6 {
   font-family: var(--heading-font-two);
 }
 
-/******** Default Body View *********/
+a {
+  text-decoration: none;
+  color: var(--link-color);
+}
+
+/******** *************** ***********
+********* DEFAULT STYLING ***********
+********* *************** **********/
+
+/******** BODY STYLING *********/
+
 body {
+  display: block;
   max-width: 1600px;
   margin: 0 auto;
   font-family: var(--paragraph-font);
   font-size: var(--base-font-size);
-  background-color: var(--background-color-primary);
+  background-color: var(--main-background-color);
   color: var(--body-text-color);
 }
 
+header,
+nav {
+  background-color: var(--header-background-color);
+  color: var(--header-text-color);
+}
+
+header a,
+nav a {
+  color: var(--navigation-active-link);
+}
+
+/* Buttons */
+button {
+  border: none;
+  padding: var(--base-padding);
+  font-weight: bold;
+  margin: var(--base-margin) 0;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: var(--hover-background-color);
+}
+
+.primary-buttons {
+  background-color: var(--primary-button-background-color);
+  color: var(--primary-button-text-color);
+  text-shadow: 0 0 1px #000000;
+}
+
+.secondary-buttons {
+  background-color: var(--secondary-button-background-color);
+  color: var(--secondary-button-text-color);
+}
+
+/* Icon */
+i {
+  color: var(--icon-color-three);
+}
+
+
+/******* FOOTER STYLING *********/
+footer {
+  background-color: var(--footer-background-color);
+  color: var(--footer-text-color);
+}
+
+footer a {
+  color: var(--footer-link-color);
+}
+
+/************* *************** ************
+**************  MAJOR STYLING  ************
+************** *************** ***********/
+
 /***** STYLING HEADER *******/
+/***** Top Header **********/
 #top-header {
   display: grid;
   grid-template-columns: 1fr 1fr;
   padding: var(--base-padding);
   width: 100%;
+  font-size: 1.2em;
 }
 
 .siteName {
@@ -102,7 +210,9 @@ body {
 }
 
 .siteName a {
-  font-size: 2.5em;
+  font-size: 1.8em;
+  font-weight: bold;
+  color: var(--heading-text-color);
 }
 
 #tools {
@@ -110,5 +220,258 @@ body {
 }
 
 #tools a {
+  width: 100%;
   text-align: right;
+  display: block;
+  font-weight: bold;
+}
+
+/***** Navigation ********/
+nav {
+  width: 100%;
+  padding: var(--large-padding);
+  font-weight: bold;
+}
+
+nav ul {
+  display: flex;
+  justify-content: space-evenly;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  cursor: pointer;
+}
+
+nav ul li:hover {
+  color: var(--link-active-color);
+}
+
+/****** Footer Styling *******/
+footer {
+  padding: var(--base-padding);
+}
+
+
+
+/****** Body Content *******/
+main {
+  width: 100%;
+  min-height: 80vh;
+  padding: var(--base-padding);
+}
+
+#home-main-container {
+  display: grid;
+}
+
+/****** banner section ******/
+#banner-section div {
+  width: 100%;
+  background: url('../images/site/checkerboard.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+#banner-section .banner-img-holder {
+  grid-column: 1/2;
+  grid-row: 1/2;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+#banner-section .banner-img-holder picture {
+  grid-column: 1/2;
+  grid-row: 1/2;
+  width: 100%;
+}
+
+#banner-section .banner-img-holder picture img {
+  width: 100%;
+  height: auto;
+}
+
+#banner-section div section {
+  grid-column: 1/2;
+  grid-row: 1/2;
+  border-radius: 5px;
+  width: fit-content;
+  height: fit-content;
+  padding: var(--base-padding);
+  margin: var(--base-margin);
+  background-color: var(--dark-transparency);
+  color: var(--accent-one);
+  align-self: center;
+  z-index: 1;
+}
+
+#banner-section div section h3 {
+  color: var(--accent-two);
+  margin: 0;
+}
+
+#banner-section div section p {
+  margin: 0;
+  margin-top: var(--base-margin);
+}
+
+#banner-section div section button {
+  margin: 0;
+  margin-top: var(--base-margin);
+}
+
+/***** review section *******/
+#review-section ul {
+  color: var(--body-text-color);
+  padding: 0 1rem;
+}
+
+#review-section ul li {
+  line-height: 2rem;
+}
+
+/****** upgrade section *******/
+#upgrade-section>div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+#upgrade-section div .picture-card {
+  width: 100%;
+  height: 100%;
+  background-color: var(--dark-transparency);
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 1px var(--light-transparency);
+  overflow: hidden;
+}
+
+div .picture-card .image-holder {
+  width: 100%;
+  background-color: var(--light-transparency);
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
+
+div .picture-card .image-holder img {
+  width: 100%;
+  height: auto;
+}
+
+div .picture-card a {
+  text-align: center;
+  padding: var(--base-padding);
+  display: grid;
+  align-content: center;
+}
+
+/**** animate images *****/
+#banner-img {
+  animation-name: rotate-y;
+  animation-duration: 10s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+#flux-cap-img {
+  animation-name: rotate-y-360;
+  animation-duration: 3s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+#flame-decals-img {
+  animation-name: rotate-to-and-fro;
+  animation-duration: 10s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+#bumper-stickers-img {
+  animation-name: move-left-right;
+  animation-duration: 3s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+#hub-cap-img {
+  animation-name: rotate-x;
+  animation-duration: 5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes rotate-to-and-fro {
+  0% {
+    transform: rotate(0);
+  }
+
+  50% {
+    transform: rotate(10deg);
+  }
+
+  75% {
+    transform: rotate(-10deg);
+  }
+
+  100% {
+    transform: rotate(0);
+  }
+}
+
+@keyframes rotate-x {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate-y {
+  0% {
+    transform: rotateY(0);
+  }
+
+  50% {
+    transform: rotateY(40deg);
+  }
+
+  100% {
+    transform: rotateY(0);
+  }
+}
+
+@keyframes move-left-right {
+  0% {
+    transform: translate(-10px);
+  }
+
+  50% {
+    transform: translate(10px);
+  }
+
+  100% {
+    transform: translate(-10px);
+  }
+}
+
+@keyframes rotate-y-360 {
+  0% {
+    transform: rotateY(0);
+  }
+
+  100% {
+    transform: rotateY(360deg);
+  }
 }
