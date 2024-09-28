@@ -1,0 +1,16 @@
+{
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": true
+                }
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "PostgreSQL",
+            "name": "render.com",
+            "connectString": "postgresql://danism:B9BeEy0NiWTbAv4MGjRflHg64YRzffYT@dpg-crqrribqf0us73fqds1g-a.frankfurt-postgres.render.com/moto_2go1"
+        }
+    ]
+}
