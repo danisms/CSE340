@@ -1,0 +1,10 @@
+<%# Display Error Message %>
+<% if (title) { %>
+    <h1><%= title %></h1>
+<% } else {
+    res.redirect('/')
+} %>
+
+<%- message %>
+<%- error404Humor %>
+

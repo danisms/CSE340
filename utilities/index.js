@@ -59,4 +59,19 @@ Util.buildClassificationGrid = async function (data) {
     return grid
 }
 
+Util.get404PageNotFoundDisplay = async function (req, res, next) {
+    let notFoundContainer = '<div id="page-not-found-container>'
+    notFoundContainer += '<video src="videos/page-error/flamingos-404-error-pa.mp4" autoplay></video>'
+    notFoundContainer += '<p>👀</p>'
+    notFoundContainer += '</div>'
+    return notFoundContainer
+}
+
+/* ****************************************************
+* Middleware For Handling Errors
+* Wrap other function in this for 
+* General Error Handling
+**************************************************** */
+Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
+
 module.exports = Util
