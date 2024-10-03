@@ -10,7 +10,7 @@
             "server": "localhost",
             "driver": "PostgreSQL",
             "name": "render.com",
-            "connectString": "postgresql://danism:B9BeEy0NiWTbAv4MGjRflHg64YRzffYT@dpg-crqrribqf0us73fqds1g-a.frankfurt-postgres.render.com/moto_2go1"
+            "connectString": "postgresql://danism:SVwt1MJPbxOFweE9qq06lzxteiwJhO7U@dpg-crrr6mtds78s73ds9dhg-a.frankfurt-postgres.render.com/moto_db_zh0b"
         }
     ]
 }
