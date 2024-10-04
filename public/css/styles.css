@@ -410,6 +410,75 @@ div .picture-card a {
   animation-iteration-count: infinite;
 }
 
+/* ******************************************
+***** Classification Grid View Styling ******
+********************************************/
+#inv-display {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 350px));
+  /* background-color: blue; */
+  list-style: none;
+  gap: var(--base-margin);
+  justify-content: center;
+  /* padding: var(--base-padding); */
+  margin: 0;
+  padding: 0;
+}
+
+#inv-display li {
+  background-color: var(--dark-transparency);
+  padding: var(--base-padding);
+  border-radius: var(--base-margin);
+  display: grid;
+  grid-template-rows: 230px 1fr;
+}
+
+#inv-display li a {
+  width: 100%;
+  height: 100%;
+  background-color: var(--dark-transparency);
+  overflow: hidden;
+  align-content: center;
+}
+
+#inv-display li a img {
+  width: 100%;
+  height: auto;
+}
+
+.namePrice > h2 {
+  text-align: center;
+  margin: var(--base-margin);
+}
+
+.namePrice > span {
+  width: 100%;
+  padding: 0 var(--base-padding);
+  font-weight: bold;
+  font-size: 1.1em;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.namePrice > span > .price {
+  text-align: left;
+  color: var(--accent-three);
+}
+
+.namePrice > span > .color {
+  text-align: right;
+  justify-self: self-end;
+  width: fit-content;
+  background-color: var(--accent-one);
+  border: 1px solid var(--accent-one);
+  padding: .1em var(--base-padding);
+  border-radius: 10px;
+}
+
+
+/* *****************************************
+******** General Animation Styling *********
+*******************************************/
 @keyframes rotate-to-and-fro {
   0% {
     transform: rotate(0);
