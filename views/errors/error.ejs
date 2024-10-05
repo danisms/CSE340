@@ -1,10 +1,17 @@
 <%# Display Error Message %>
-<% if (title) { %>
-    <h1><%= title %></h1>
-<% } else {
-    res.redirect('/')
-} %>
+<div id="page-not-found-container">
+    <% if (title) { %>
+        <h1><%= title %></h1>
+    <% } else {
+        res.redirect('/')
+    } %>
 
-<%- message %>
-<%- error404Humor %>
-
+    <div id="humor-container">
+        <span id='error-message-holder'>
+            <%- message %>
+        </span>
+        <span id="error-humor-holder">
+            <%- errorHumor %>
+        </span>
+    </div>
+</div>

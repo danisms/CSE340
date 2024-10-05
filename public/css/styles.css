@@ -446,12 +446,12 @@ div .picture-card a {
   height: auto;
 }
 
-.namePrice > h2 {
+.namePrice>h2 {
   text-align: center;
   margin: var(--base-margin);
 }
 
-.namePrice > span {
+.namePrice>span {
   width: 100%;
   padding: 0 var(--base-padding);
   font-weight: bold;
@@ -460,19 +460,115 @@ div .picture-card a {
   grid-template-columns: 1fr 1fr;
 }
 
-.namePrice > span > .price {
+.namePrice>span>.price {
   text-align: left;
   color: var(--accent-three);
 }
 
-.namePrice > span > .color {
+.car-color-text {
   text-align: right;
   justify-self: self-end;
   width: fit-content;
   background-color: var(--accent-one);
-  border: 1px solid var(--accent-one);
+  border-style: solid;
+  border-left: .5px;
+  border-right: .5px;
+  /* border: 1px solid var(--accent-one); */
   padding: .1em var(--base-padding);
-  border-radius: 10px;
+  /* border-radius: 10px; */
+}
+
+
+/* *****************************************
+***** An Inventory Detail Page Styling *****
+*******************************************/
+#inv-detail-container {
+  width: 100%;
+  background-color: var(--secondary-color-one);
+  color: var(--primary-color-one);
+  font-size: 1.2em;
+}
+
+/* Image Section */
+#image-section {
+  display: grid;
+  width: 100%;
+  align-content: center;
+}
+
+#image-section img {
+  width: 100%;
+  height: auto;
+}
+
+/* Content Section */
+#content-section {
+  width: 100%;
+  height: 100%;
+  padding: var(--base-padding);
+  margin: 0;
+  background-color: var(--dark-transparency);
+  color: var(--accent-one);
+}
+#content-section h2 {
+  color: var(--accent-one);
+}
+#content-section > span {
+  display: block;
+  margin-bottom: var(--base-margin);
+}
+#content-section > span b {
+  color: var(--accent-two);
+}
+
+
+/* *****************************************
+************ Error Page Styling ************
+*******************************************/
+#page-not-found-container {
+  /* background-color: var(--dark-transparency); */
+  width: 100%;
+  display: block;
+}
+
+#page-not-found-container h1 {
+  z-index: 1;
+}
+
+#humor-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  background-color: var(--secondary-color-one);
+}
+
+#error-message-holder {
+  /* grid-column: 1/2;
+  grid-row: 1/2; */
+  width: fit-content;
+  height: fit-content;
+  padding: var(--base-padding);
+  border-radius: var(--base-padding);
+  background-color: var(--dark-transparency);
+  color: var(--accent-one);
+  margin: var(--base-margin);
+  font-size: 1.2em;
+  z-index: 1;
+}
+
+#error-humor-holder {
+  /* grid-column: 1/2;
+  grid-row: 1/2; */
+  width: 100%;
+  height: fit-content;
+  display: grid;
+  align-content: center;
+  /* overflow: hidden; */
+}
+
+.error-humor {
+  width: 100%;
+  height: auto;
 }
 
 

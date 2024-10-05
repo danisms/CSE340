@@ -12,6 +12,7 @@ const app = express()
 
 const static = require("./routes/static")
 const inventoryRoute = require("./routes/inventoryRoute")
+const testErrorRoute = require("./routes/testErrorRoute")
 
 const baseController = require("./controllers/baseController")
 const utilities = require("./utilities/")
@@ -31,7 +32,9 @@ app.use(static)
 app.get("/", utilities.handleErrors(baseController.buildHome))
 // Inventory routes
 app.use("/inv", inventoryRoute)
-// File Not Found Rote - must be last route in the route list
+// Test error routes
+app.use("/test-error", testErrorRoute)
+// File Not Found Route - must be last route in the route list
 app.use(async (req, res, next) => {
   next({status: 404, message: 'Sorry, we appear to have lost that page.'})
 })
@@ -42,10 +45,9 @@ app.use(async (req, res, next) => {
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav()
   let description = 'Error Page'
-  let error404Humor
+  let errorHumor = await utilities.getErrorDisplayHumor()
   if (err.status == 404) {
     message = err.message
-    error404Humor = await utilities.get404PageNotFoundDisplay()
   } else {
     message = 'Oh no! There was a crash. Maybe try a different route?'
   }
@@ -57,7 +59,7 @@ app.use(async (err, req, res, next) => {
     title: err.status || 'Server Error',
     message,
     nav,
-    error404Humor
+    errorHumor
   })
 })
 
