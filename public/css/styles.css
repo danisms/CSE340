@@ -125,6 +125,28 @@ a {
 ********* DEFAULT STYLING ***********
 ********* *************** **********/
 
+/***** SERVER MESSAGE STYLING *****/
+.notice,
+.warning {
+  width: fit-content;
+  padding: var(--base-padding);
+  background-color: var(--dark-transparency);
+  color: var(--accent-one);
+  list-style: none;
+}
+
+.warning {
+  color: var(--primary-color-two);
+}
+
+.notice li::before {
+  content: "Notice: ";
+}
+
+.warning li::before {
+  content: "Warning: ";
+}
+
 /******** BODY STYLING *********/
 
 body {
@@ -510,14 +532,17 @@ div .picture-card a {
   background-color: var(--dark-transparency);
   color: var(--accent-one);
 }
+
 #content-section h2 {
   color: var(--accent-one);
 }
-#content-section > span {
+
+#content-section>span {
   display: block;
   margin-bottom: var(--base-margin);
 }
-#content-section > span b {
+
+#content-section>span b {
   color: var(--accent-two);
 }
 

@@ -12,5 +12,8 @@
             "name": "render.com",
             "connectString": "postgresql://danism:SVwt1MJPbxOFweE9qq06lzxteiwJhO7U@dpg-crrr6mtds78s73ds9dhg-a.frankfurt-postgres.render.com/moto_db_zh0b"
         }
+    ],
+    "cSpell.words": [
+        "resave"
     ]
 }
