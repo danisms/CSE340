@@ -19,15 +19,15 @@
     <form action="/account/process-registration" method="post" class="forms">
         <label>
             First name: 
-            <input type="text" name="account_firstname" id="account_firstname" required>
+            <input type="text" name="account_firstname" id="account_firstname" value="<%= locals.account_firstname %>" required>
         </label>
         <label>
             Last name: 
-            <input type="text" name="account_lastname" id="account_lastname" required>
+            <input type="text" name="account_lastname" id="account_lastname" value="<%= locals.account_lastname %>" required>
         </label>
         <label>
             Email: 
-            <input type="email" name="account_email" id="account_email" required placeholder="Enter a valid email address">
+            <input type="email" name="account_email" id="account_email" required value="<%= locals.account_email %>" placeholder="Enter a valid email address">
         </label>
         <label>
             Password: 

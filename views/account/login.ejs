@@ -7,10 +7,19 @@
 
 <div class="form-container">
     <%- messages() %>
-    <form action="" method="GET" class="forms">
+    <% if (errors) { %>
+        <ul class="notice">
+            <% errors.array().forEach(error => { %>
+                <% if (error.msg.toLowerCase() != 'invalid value') { %>
+                    <li><%= error.msg %></li>
+                <% } %>
+            <% }) %>
+        </ul>
+    <% } %> 
+    <form action="/account/login" id="loginForm" method="post" class="forms">
         <label>
             Email: 
-            <input type="email" name="account_email" id="account_email" placeholder="name@example.com" required>
+            <input type="email" name="account_email" id="account_email" placeholder="name@example.com" value="<%= locals.account_email %>" required>
         </label>
         <label>
             Password: 
@@ -24,4 +33,4 @@
             No account? <a href="/account/register">Sign-up</a>
         </span>
     </form>
-</di>
+</div>
