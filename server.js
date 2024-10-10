@@ -8,10 +8,12 @@
 const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
 const env = require("dotenv").config()
+const bodyParser = require("body-parser")
 const app = express()
 
 const static = require("./routes/static")
 const inventoryRoute = require("./routes/inventoryRoute")
+const accountRoute = require("./routes/accountRoute")
 const testErrorRoute = require("./routes/testErrorRoute")
 
 const baseController = require("./controllers/baseController")
@@ -42,6 +44,10 @@ app.use(function(req, res, next){
   next()
 })
 
+// Body Parser Middleware
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true}))  // for parsing application/x-www-form-urlencoded
+
 
 /* ***********************
  * View Engine
@@ -58,6 +64,8 @@ app.use(static)
 app.get("/", utilities.handleErrors(baseController.buildHome))
 // Inventory routes
 app.use("/inv", inventoryRoute)
+// Account routes
+app.use("/account", accountRoute)
 // Test error routes
 app.use("/test-error", testErrorRoute)
 // File Not Found Route - must be last route in the route list

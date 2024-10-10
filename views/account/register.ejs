@@ -1,0 +1,67 @@
+<%# EJS Check Title and display view %>
+<% if (title) { %>
+    <h1 class="form-title"><%= title %></h1>
+<% } else {
+    res.redirect('/')
+} %>
+
+<div class="form-container">
+    <%#- messages() %>
+    <% if (errors) { %>
+        <ul class="notice">
+            <% errors.array().forEach(error => { %>
+                <li><%= error.msg %></li>
+            <% }) %>
+        </ul>
+    <% } %> 
+    <form action="/account/process-registration" method="post" class="forms">
+        <label>
+            First name: 
+            <input type="text" name="account_firstname" id="account_firstname" required>
+        </label>
+        <label>
+            Last name: 
+            <input type="text" name="account_lastname" id="account_lastname" required>
+        </label>
+        <label>
+            Email: 
+            <input type="email" name="account_email" id="account_email" required placeholder="Enter a valid email address">
+        </label>
+        <label>
+            Password: 
+            <span class="password-and-show-btn">
+                <input type="password" name="account_password" id="account_password" class="register-password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" title="Password must be a minimum of 12 characters, contain at least 1 capital letter, 1 number and 1 special character." required>
+                <span id="show-hide-pass-btn">show</span>
+            </span>
+        </label>
+        <label class="form-note">
+            NOTE: Password must be a minimum of 12 characters, contain at least 1 capital letter, 1 number and 1 special character.
+        </label>
+        <input type="submit" class="submit-btn" value="REGISTER">
+    </form>
+</div>
+<script>
+    // Show and Hide Password
+    // important variables
+    const showPassText = 'show';
+    const hidePassText = 'hide';
+
+    // get elements
+    const showHidePassBtn = document.getElementById('show-hide-pass-btn');
+    const passWordInput = document.getElementById('account_password');
+
+    // set initial states
+    showHidePassBtn.textContent = showPassText;
+
+    // create show/hide password functionality
+    showHidePassBtn.addEventListener('click', () => {
+        if (showHidePassBtn.textContent == showPassText) {
+            showHidePassBtn.textContent = hidePassText;
+            passWordInput.setAttribute('type', 'text');
+        } else {
+            showHidePassBtn.textContent = showPassText;
+            passWordInput.setAttribute('type', 'password');
+        }
+        // console.log('clicked show/hide password btn');  // for testing purpose
+    })
+</script>

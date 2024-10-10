@@ -116,6 +116,10 @@ h6 {
   font-family: var(--heading-font-two);
 }
 
+h1 {
+  margin: var(--base-margin);
+}
+
 a {
   text-decoration: none;
   color: var(--link-color);
@@ -544,6 +548,89 @@ div .picture-card a {
 
 #content-section>span b {
   color: var(--accent-two);
+}
+
+
+/* *****************************************
+******* Login/Sign-up Page Styling *********
+*******************************************/
+.form-title {
+  margin-left: 10%;
+}
+
+.form-container {
+  width: 80%;
+  height: fit-content;
+  background-color: var(--light-transparency);
+  padding: var(--base-padding);
+  border-radius: 5px;
+  margin: 0 auto;
+}
+
+.forms {
+  background-color: var(--dark-transparency);
+  padding: var(--base-padding);
+  border-radius: 5px;
+}
+
+.forms input {
+  display: block;
+  padding: var(--base-padding);
+  width: 100%;
+  margin-bottom: var(--large-margin);
+  border: none;
+  border-radius: 5px;
+  outline: none;
+}
+
+input:required:invalid, input:focus:invalid {
+  border-right: 2px solid red;
+}
+
+input:required:valid {
+  border-right: 2px solid greenyellow;
+}
+
+.submit-btn,
+.forms .submit-btn {
+  border-radius: 15px;
+  border: none;
+  width: fit-content;
+  font-weight: bold;
+  padding: var(--base-padding) var(--large-padding);
+  margin: var(--base-margin) auto;
+}
+
+.block-span {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.password-and-show-btn {
+  display: grid;
+  grid-template-columns: .8fr .2fr;
+}
+
+.form-note {
+  display: none;
+}
+
+.forms .register-password {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+#show-hide-pass-btn {
+  display: block;
+  width: 100%;
+  height: fit-content;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: var(--dark-transparency);
+  color: var(--accent-one);
+  font-weight: bold;
+  padding: var(--base-padding);
+  text-align: center;
 }
 
 

@@ -1,0 +1,27 @@
+<%# EJS Check Title and display view %>
+<% if (title) { %>
+    <h1 class="form-title"><%= title %></h1>
+<% } else {
+    res.redirect('/')
+} %>
+
+<div class="form-container">
+    <%#- messages() %>
+    <form action="" method="GET" class="forms">
+        <label>
+            Email: 
+            <input type="email" name="account_email" id="account_email" placeholder="name@example.com" required>
+        </label>
+        <label>
+            Password: 
+            <input type="password" name="account_password" id="account_password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" title="Password must be a minimum of 12 characters, contain at least 1 capital letter, 1 number and 1 special character." required>
+        </label>
+        <label class="form-note">
+            NOTE: Password must be a minimum of 12 characters, contain at least 1 capital letter, 1 number and 1 special character.
+        </label>
+        <input type="submit" class="submit-btn" value="LOGIN">
+        <span class="block-span">
+            No account? <a href="/account/register">Sign-up</a>
+        </span>
+    </form>
+</di>

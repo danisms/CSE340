@@ -80,4 +80,19 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
     }
+
+    /* *****************************************
+    ******* Login/Sign-up Page Styling *********
+    *******************************************/
+    .form-title {
+        margin-left: 25%;
+    }
+
+    .form-container {
+        width: 50%;
+    }
+
+    .form-note {
+        display: block;
+    }
 }
