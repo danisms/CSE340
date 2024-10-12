@@ -43,15 +43,15 @@
         </label>
         <label>
             Price
-            <input type="number" name="inv_price" id="invPrice" value="<%= locals.inv_price %>" required>
+            <input type="number" name="inv_price" id="invPrice" value="<%= locals.inv_price %>" min="1" step="0.1" required>
         </label>
         <label>
             Year
-            <input type="number" name="inv_year" min="1000" max="<%= currentYear %>" id="invYear" value="<%= locals.inv_year %>" pattern="/d+" required>
+            <input type="number" name="inv_year" min="1900" max="<%= currentYear %>" step="1" id="invYear" value="<%= locals.inv_year %>" required>
         </label>
         <label>
             Miles
-            <input type="number" name="inv_miles" id="invMiles" value="<%= locals.inv_miles %>" required>
+            <input type="number" name="inv_miles" id="invMiles" value="<%= locals.inv_miles %>" min="1" step="0.1" required>
         </label>
         <label>
             Color

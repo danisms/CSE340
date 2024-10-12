@@ -1,6 +1,7 @@
 const utilities = require(".")
 const {body, validationResult} = require("express-validator")
 const invModel = require("../models/inventory-model")
+const { errors } = require("jshint/src/messages")
 const validate = {}
 
 
@@ -59,9 +60,8 @@ validate.addVehicleRule = () => {
         body("classification_id")
         .trim()
         .notEmpty()
-        .escape()
         .isLength({ min: 1 })
-        .isInt()
+        .isInt({min: 1})
         .withMessage("Please select from the classification list"), // on error this message is sent.
         
         // vehicle make is required and must be a string
@@ -109,23 +109,37 @@ validate.addVehicleRule = () => {
         .trim()
         .notEmpty()
         .isLength({ min: 1 })
-        .isInt()
-        .withMessage("Please provide a valid price"),
+        .isNumeric()
+        .withMessage("Please provide a valid price")
+        .custom(inv_price => {
+            if (parseFloat(inv_price) <= 0) {
+                throw new Error(`price (${new Intl.NumberFormat('en-Us').format(inv_price)}) must be a positive number greater than 0`)
+            } else {
+                return true
+            }
+        }),
 
         // vehicle year is required and must be a number
         body("inv_year")
         .trim()
         .notEmpty()
-        .isInt({ min: 1000, max: date.getFullYear()})
-        .withMessage("Please enter a valid year"),
+        .isInt({ min: 1900, max: date.getFullYear()})
+        .withMessage(`Please enter a valid year (between 1900 - ${date.getFullYear()})`),
 
         // vehicle miles is required and must be an integer
         body("inv_miles")
         .trim()
         .notEmpty()
         .isLength({ min: 1 })
-        .isInt()
-        .withMessage("Please provide a valid miles (numbers only)"),
+        .isNumeric()
+        .withMessage("Please provide a valid miles (numbers only)")
+        .custom(inv_miles => {
+            if (parseFloat(inv_miles) <= 0) {
+                throw new Error(`miles (${new Intl.NumberFormat('en-Us').format(inv_miles)}) must be a positive number greater than 0`)
+            } else {
+                return true
+            }
+        }),
 
         // vehicle color is required and must be a string
         body("inv_color")
