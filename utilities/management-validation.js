@@ -1,7 +1,6 @@
 const utilities = require(".")
 const {body, validationResult} = require("express-validator")
 const invModel = require("../models/inventory-model")
-const { errors } = require("jshint/src/messages")
 const validate = {}
 
 
