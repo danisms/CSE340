@@ -589,6 +589,15 @@ div .picture-card a {
   outline: none;
 }
 
+.forms textarea {
+  height: 5rem;
+  padding: .5rem;
+}
+
+.forms select {
+  text-transform: capitalize;
+}
+
 input:required:invalid, input:focus:invalid {
   border-right: 2px solid red;
 }
