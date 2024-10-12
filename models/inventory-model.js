@@ -43,4 +43,44 @@ async function getAnInventory(inv_id) {
     }
 }
 
-module.exports = {getClassifications, getInventoryByClassificationId, getAnInventory}
+
+/* *************************************
+* Check for existing classification
+* *********************************** */
+async function checkExistingClassification(classification_name) {
+    try {
+        const sql = "SELECT classification_name FROM public.classification WHERE classification_name LIKE $1"
+        const classification = await pool.query(sql, [classification_name.toLowerCase()])
+        return classification.rowCount
+    } catch (error) {
+        return error.message
+    }
+}
+
+
+/* *****************************
+* Add New Classification
+* *************************** */
+async function addNewClassification(classification_name) {
+    try {
+        const sql = "INSERT INTO public.classification (classification_name) VALUES ($1) RETURNING *;"
+        return await pool.query(sql, [classification_name.toLowerCase()])
+    } catch (error) {
+        return error.message
+    }
+}
+
+
+/* *****************************
+* Add New Vehicle
+* *************************** */
+async function addNewVehicle(classification_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color) {
+    try {
+        const sql = "INSERT INTO public.inventory (classification_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *;"
+        return await pool.query(sql, [classification_id, inv_make.toLowerCase(), inv_model.toLowerCase(), inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color.toLowerCase()])
+    } catch (error) {
+        return error.message
+    }
+}
+
+module.exports = {getClassifications, getInventoryByClassificationId, getAnInventory, checkExistingClassification, addNewClassification, addNewVehicle}

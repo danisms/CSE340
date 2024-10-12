@@ -172,6 +172,7 @@ nav {
 header a,
 nav a {
   color: var(--navigation-active-link);
+  text-transform: capitalize;
 }
 
 /* Buttons */
@@ -493,6 +494,7 @@ div .picture-card a {
 
 .car-color-text {
   text-align: right;
+  text-transform: capitalize;
   justify-self: self-end;
   width: fit-content;
   background-color: var(--accent-one);
@@ -552,7 +554,7 @@ div .picture-card a {
 
 
 /* *****************************************
-******* Login/Sign-up Page Styling *********
+******* Form/Login/Sign-up Page Styling *********
 *******************************************/
 .form-title {
   margin-left: 10%;
@@ -573,7 +575,11 @@ div .picture-card a {
   border-radius: 5px;
 }
 
-.forms input {
+.forms label {
+  font-size: 1.2em;
+}
+
+.forms input, .forms textarea, .forms select {
   display: block;
   padding: var(--base-padding);
   width: 100%;
@@ -612,8 +618,10 @@ input:required:valid {
   grid-template-columns: .8fr .2fr;
 }
 
-.form-note {
+.forms .form-note {
   display: none;
+  color: var(--primary-color-two-lighter);
+  font-size: 1em;
 }
 
 .forms .register-password {
@@ -681,6 +689,26 @@ input:required:valid {
 .error-humor {
   width: 100%;
   height: auto;
+}
+
+
+/* *****************************************
+***** Vehicle Management Page Styling ******
+*******************************************/
+.inv-management-holder {
+  background-color: var(--light-transparency);
+  padding: var(--large-padding);
+  font-size: 1.4em;
+  border-radius: 5px;
+}
+.link-btn {
+  background-color: var(--dark-transparency);
+  /* color: var(--primary-color-two); */
+  padding: var(--base-padding);
+  margin: var(--base-margin);
+  border-radius: 5px;
+  display: block;
+  text-align: center;
 }
 
 

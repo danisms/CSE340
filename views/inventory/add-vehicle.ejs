@@ -1,0 +1,62 @@
+<%# EJS Check Title and display view %>
+<% if (title) { %>
+    <h1 class="form-title"><%= title %></h1>
+<% } else {
+    res.redirect('/')
+} %>
+
+<div class="form-container">
+    <%- messages() %>
+    <% if (errors) { %>
+        <ul class="notice">
+            <% errors.array().forEach(error => { %>
+                <% if (error.msg.toLowerCase() != 'invalid value') { %>
+                    <li><%= error.msg %></li>
+                <% } %>
+            <% }) %>
+        </ul>
+    <% } %> 
+    <form action="/inv/process-add-vehicle" method="post" class="forms">
+        <label>
+            Classification
+            <%- classificationList %>
+        </label>
+        <label>
+            Make
+            <input type="text" name="inv_make" id="invMake" value="<%= locals.inv_make %>" required>
+        </label>
+        <label>
+            Model
+            <input type="text" name="inv_model" id="invModel" value="<%= locals.inv_model %>" required>
+        </label>
+        <label>
+            Description
+            <textarea name="inv_description" id="invDescription" placeholder="What is the description of the car?" required><%= locals.inv_description %></textarea>
+        </label>
+        <label>
+            Image Path
+            <input type="text" name="inv_image" id="invImage" value="<%= locals.inv_image %>" required>
+        </label>
+        <label>
+            Thumbnail
+            <input type="text" name="inv_thumbnail" id="invThumbnail" value="<%= locals.inv_thumbnail %>" required>
+        </label>
+        <label>
+            Price
+            <input type="number" name="inv_price" id="invPrice" value="<%= locals.inv_price %>" required>
+        </label>
+        <label>
+            Year
+            <input type="number" name="inv_year" min="1000" max="<%= currentYear %>" id="invYear" value="<%= locals.inv_year %>" pattern="/d+" required>
+        </label>
+        <label>
+            Miles
+            <input type="number" name="inv_miles" id="invMiles" value="<%= locals.inv_miles %>" required>
+        </label>
+        <label>
+            Color
+            <input type="text" name="inv_color" id="invColor" value="<%= locals.inv_color %>" pattern="[A-Za-z]+" title="Color must be alphabets" required>
+        </label>
+        <input type="submit" class="submit-btn" value="ADD CLASSIFICATION">
+    </form>
+</div>

@@ -1,7 +1,6 @@
 const utilities = require('../utilities/')
 const accountModel = require('../models/account-model')
-const bcrypt = require("bcryptjs")
-const { errors } = require('jshint/src/messages')
+const bcrypt = require('bcryptjs')
 
 /* ***************************************
 * Deliver Login View
@@ -37,7 +36,7 @@ async function registerAccount(req, res) {
     let nav = await utilities.getNav()
     const { account_firstname, account_lastname, account_email, account_password } = req.body
 
-    // Has the password before storing
+    // Hash the password before storing
     let hashedPassword
     try {
         // regular password and cost (salt is generated automatically)

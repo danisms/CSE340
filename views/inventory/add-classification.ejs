@@ -1,0 +1,29 @@
+<%# EJS Check Title and display view %>
+<% if (title) { %>
+    <h1 class="form-title"><%= title %></h1>
+<% } else {
+    res.redirect('/')
+} %>
+
+<div class="form-container">
+    <%- messages() %>
+    <% if (errors) { %>
+        <ul class="notice">
+            <% errors.array().forEach(error => { %>
+                <% if (error.msg.toLowerCase() != 'invalid value') { %>
+                    <li><%= error.msg %></li>
+                <% } %>
+            <% }) %>
+        </ul>
+    <% } %> 
+    <form action="/inv/process-add-classification" method="post" class="forms">
+        <label>
+            Classification Name
+            <input type="text" name="classification_name" id="classificationName" pattern="[A-Za-z]+" title="Name must be alphabetic character" value="<%= locals.classification_name %>" required>
+        </label>
+        <label class="form-note">
+            NOTE: Name must be alphabetic characters only
+        </label>
+        <input type="submit" class="submit-btn" value="ADD CLASSIFICATION">
+    </form>
+</div>
