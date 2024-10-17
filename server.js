@@ -7,6 +7,7 @@
  *************************/
 const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
+const cookieParser = require("cookie-parser")
 const env = require("dotenv").config()
 const bodyParser = require("body-parser")
 const app = express()
@@ -47,6 +48,12 @@ app.use(function(req, res, next){
 // Body Parser Middleware
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true}))  // for parsing application/x-www-form-urlencoded
+
+// CookieParser MiddleWare
+app.use(cookieParser())
+
+// check for jwt token and verify token if exist
+app.use(utilities.checkJWTToken)
 
 
 /* ***********************

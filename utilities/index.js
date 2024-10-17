@@ -1,6 +1,9 @@
 // Modules to work with files (Node module)
 const fs = require('fs')
 const path = require('path')
+// External Modules
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 // Need Modules (created by me)
 const invModel = require("../models/inventory-model")
 const Util = {}
@@ -189,5 +192,41 @@ Util.choice = function (list) {
 * General Error Handling
 **************************************************** */
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
+
+
+/* ****************************************************
+* Middleware to check token validity
+**************************************************** */
+Util.checkJWTToken = (req, res, next) => {
+    if (req.cookies.jwt) {
+        jwt.verify (
+            req.cookies.jwt,
+            process.env.ACCESS_TOKEN_SECRET,
+            function (err, accountData) {
+                if (err) {
+                    req.flash("Please login")
+                    res.clearCookie("jwt")
+                    return res.redirect("/account/login")
+                }
+                res.locals.accountData = accountData
+                res.locals.loggedin = 1
+                next()
+            })
+    } else {
+        next()
+    }
+}
+
+/* *******************************************
+* Check Login
+* ***************************************** */
+Util.checkLogin = (req, res, next) => {
+    if (res.locals.loggedin) {
+        next()
+    } else {
+        req.flash("notice", "Please login.")
+        return res.redirect("/account/login")
+    }
+}
 
 module.exports = Util

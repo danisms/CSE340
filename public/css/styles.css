@@ -579,7 +579,9 @@ div .picture-card a {
   font-size: 1.2em;
 }
 
-.forms input, .forms textarea, .forms select {
+.forms input,
+.forms textarea,
+.forms select {
   display: block;
   padding: var(--base-padding);
   width: 100%;
@@ -598,7 +600,8 @@ div .picture-card a {
   text-transform: capitalize;
 }
 
-input:required:invalid, input:focus:invalid {
+input:required:invalid,
+input:focus:invalid {
   border-right: 2px solid red;
 }
 
@@ -637,6 +640,7 @@ input:required:valid {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
+
 #show-hide-pass-btn {
   display: block;
   width: 100%;
@@ -704,21 +708,59 @@ input:required:valid {
 /* *****************************************
 ***** Vehicle Management Page Styling ******
 *******************************************/
-.inv-management-holder {
+.inv-management-background {
+  max-width: 700px;
+  width: 100%;
+  height: fit-content;
   background-color: var(--light-transparency);
+  border-radius: 5px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  overflow: hidden;
+}
+.inv-management-holder {
+  width: 100%;
+  background-color: var(--dark-transparency);
   padding: var(--large-padding);
   font-size: 1.4em;
-  border-radius: 5px;
 }
+
 .link-btn {
   background-color: var(--dark-transparency);
   /* color: var(--primary-color-two); */
   padding: var(--base-padding);
   margin: var(--base-margin);
-  border-radius: 5px;
   display: block;
   text-align: center;
+  border-radius: 5px;
 }
+
+.inv-management-holder h2 {
+  font-size: 1em;
+  font-family: var(--paragraph-font);
+}
+.inv-management-holder p {
+  font-size: .8em;
+}
+.inv-management-holder select {
+  text-transform: capitalize;
+  font-size: .9em;
+  border-radius: 5px;
+  outline: none;
+}
+
+#inventoryDisplay {
+  max-width: 700px;
+  width: 100%;
+  background-color: var(--dark-transparency);
+  padding: var(--base-padding);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  text-transform: capitalize;
+  /* font-size: .8em; */
+}
+
+
 
 
 /* *****************************************

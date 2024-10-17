@@ -20,6 +20,13 @@ router.get("/add-classification", utilities.handleErrors(invController.buildAddC
 // Route to add new vehicle
 router.get("/add-vehicle", utilities.handleErrors(invController.buildAddVehicle));
 
+// Route to get inventory by classification_id
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON));
+
+// Route to modify and inventory by inventory_id
+router.get("/edit/:inventory_id", utilities.handleErrors(invController.buildEditInventory));
+
+
 // Route to process add classification
 router.post(
     '/process-add-classification',
@@ -35,5 +42,13 @@ router.post(
     managementValidation.checkNewVehicleData,
     utilities.handleErrors(invController.addVehicle)
 );
+
+// Route to process vehicle (inventory) update
+router.post(
+    '/process-update-vehicle',
+    managementValidation.addVehicleRule(),
+    managementValidation.checkUpdateInventoryData,
+    utilities.handleErrors(invController.updateInventory)
+)
 
 module.exports = router;

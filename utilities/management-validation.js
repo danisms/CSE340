@@ -153,7 +153,7 @@ validate.addVehicleRule = () => {
 
 
 /* ******************************************************************
-* Check data and return error or continue to add new classification
+* Check data and return error or continue to add new vehicle
 * **************************************************************** */
 validate.checkNewVehicleData = async (req, res, next) => {
     const { classification_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color } = req.body
@@ -187,5 +187,47 @@ validate.checkNewVehicleData = async (req, res, next) => {
     }
     next()
 }
+
+
+/* ******************************************************************
+* Check data and return error or continue to update inventory
+* **************************************************************** */
+validate.checkUpdateInventoryData = async (req, res, next) => {
+    const { inv_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color, classification_id } = req.body
+    let errors = []
+    errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        let nav = await utilities.getNav()
+        let inventoryName = `${inv_make} ${inv_model}`
+        const date = new Date()
+        const currentYear = date.getFullYear()
+        let classificationList = await utilities.buildClassificationList(classification_id)
+        res.render("inventory/edit-inventory", {
+            errors,
+            description: `Make modification to an inventory (${inventoryName})`,
+            title: "Edit" + inventoryName,
+            nav,
+            classificationList,
+            currentYear,
+            
+            inv_id,
+            inv_make,
+            inv_model,
+            inv_description,
+            inv_image,
+            inv_thumbnail,
+            inv_price,
+            inv_year,
+            inv_miles,
+            inv_color,
+            classification_id,
+        })
+        return
+    }
+    next()
+}
+
+
+
 
 module.exports = validate

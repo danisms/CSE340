@@ -1,0 +1,11 @@
+<%# EJS Check Title and display view %>
+<% if (title) { %>
+    <h1 class="form-title"><%= title %></h1>
+<% } else {
+    res.redirect('/')
+} %>
+
+<div class="my-dashboard">
+    <%- messages() %>
+    <h2>You're logged in</h2>
+</div>
