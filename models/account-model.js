@@ -66,8 +66,13 @@ async function getAnAccount(account_id) {
 * **************************************** */
 async function updateAccountInfo(account_firstname, account_lastname, account_email, account_id) {
     try {
-        const sql = "UPDATE public.account SET account_firstname = $1, account_lastname = $2, account_email = $3 WHERE account_id = $4 RETURNING *;"
-        const data = await pool.query(sql, [account_firstname.toLowerCase(), account_lastname.toLowerCase(), account_email.toLowerCase(), account_id])
+        // using a prepare statement
+        const query = {
+            name: 'update-account-info',
+            text: "UPDATE public.account SET account_firstname = $1, account_lastname = $2, account_email = $3 WHERE account_id = $4 RETURNING *;",
+            values: [account_firstname.toLowerCase(), account_lastname.toLowerCase(), account_email.toLowerCase(), account_id]
+        }
+        const data = await pool.query(query)
         return data.rows[0]
     } catch (error) {
         console.error("model error: " + error)
@@ -75,12 +80,17 @@ async function updateAccountInfo(account_firstname, account_lastname, account_em
 }
 
 /* ******************************************
-* Update An Account Info
+* Update An Account Password
 * **************************************** */
 async function updatePassword(hashedPassword, account_id) {
     try {
-        const sql = "UPDATE public.account SET account_password = $1 WHERE account_id = $2 RETURNING *;"
-        const data = await pool.query(sql, [hashedPassword, account_id])
+        // using a prepare statement
+        const query = {
+            name: 'update-account-password',
+            text: "UPDATE public.account SET account_password = $1 WHERE account_id = $2 RETURNING *;",
+            values: [hashedPassword, account_id]
+        }
+        const data = await pool.query(query)
         return data.rows[0]
     } catch (error) {
         console.error("model error: " + error)
