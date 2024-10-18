@@ -218,11 +218,31 @@ Util.checkJWTToken = (req, res, next) => {
 }
 
 /* *******************************************
-* Check Login
+* Middleware to check login
 * ***************************************** */
 Util.checkLogin = (req, res, next) => {
     if (res.locals.loggedin) {
         next()
+    } else {
+        req.flash("notice", "Please login.")
+        return res.redirect("/account/login")
+    }
+}
+
+/* ***********************************************************************
+* Middleware to authenticate user (check user rights/account privileges)
+* ********************************************************************* */
+Util.checkAccountPrivilege = (req, res, next) => {
+    if (res.locals.loggedin) {
+        // check account type
+        const accountType = res.locals.accountData.account_type.toLowerCase()
+        if (accountType == 'admin' || accountType == 'employee') {
+            next()
+        } else {
+            const accountName = res.locals.accountData.account_firstname
+            req.flash("notice", `Sorry ${accountName.slice(0, 1).toUpperCase()}${accountName.slice(1)} your account is not having the privilege to access this area.`)
+            return res.redirect("/account/login");
+        }
     } else {
         req.flash("notice", "Please login.")
         return res.redirect("/account/login")

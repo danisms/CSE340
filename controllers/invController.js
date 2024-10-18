@@ -186,7 +186,7 @@ invCont.buildEditInventory = async function (req, res, next) {
     let classificationList = await utilities.buildClassificationList(inventoryData.classification_id)
     res.render("inventory/edit-inventory", {
         description: `Make modification to an inventory (${inventoryName})`,
-        title: "Edit" + inventoryName,
+        title: "Edit " + inventoryName,
         nav,
         classificationList,
         currentYear,
@@ -245,6 +245,48 @@ invCont.updateInventory = async function (req, res) {
             inv_color,
             classification_id,
         })
+    }
+}
+
+/* **********************************************************
+* Deliver Delete Inventory View
+* ******************************************************** */
+invCont.buildDeleteInventory = async function (req, res, next) {
+    const date = new Date()
+    const currentYear = date.getFullYear()
+    const inv_Id = parseInt(req.params.inventory_id)  // get the selected inventory id form link header
+    let nav = await utilities.getNav()
+    let inventoryData = await invModel.getAnInventory(inv_Id)
+    let inventoryName = `${inventoryData.inv_make} ${inventoryData.inv_model}`;
+    res.render("inventory/delete-confirm", {
+        description: `Delete an inventory (${inventoryName})`,
+        title: "Delete " + inventoryName,
+        nav,
+        currentYear,
+        errors: null,
+        inv_id: inventoryData.inv_id,
+        inv_make: inventoryData.inv_make,
+        inv_model: inventoryData.inv_model,
+        inv_year: inventoryData.inv_year,
+        inv_price: inventoryData.inv_price,
+    })
+}
+
+/* **************************************
+* Process Inventory Delete
+* ************************************ */
+invCont.deleteInventory = async function (req, res) {
+    let { inv_id } = req.body
+    inv_id = parseInt(inv_id)
+
+    const deleteResult = await invModel.deleteInventory(inv_id)
+
+    if (deleteResult) {
+        req.flash ("notice", `The item was successfully deleted.`)
+        res.redirect("/inv/")
+    } else {
+        req.flash ("notice", `Sorry the item delete failed.`)
+        res.redirect("/inv/delete:"+inv_id)
     }
 }
 

@@ -11,6 +11,3 @@ router.use("/videos", express.static(__dirname + "public/videos"));
 // router.use("/fontawesome", express.static(__dirname + "public/fontawesome"));
 
 module.exports = router;
-
-
-

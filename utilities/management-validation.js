@@ -205,7 +205,7 @@ validate.checkUpdateInventoryData = async (req, res, next) => {
         res.render("inventory/edit-inventory", {
             errors,
             description: `Make modification to an inventory (${inventoryName})`,
-            title: "Edit" + inventoryName,
+            title: "Edit " + inventoryName,
             nav,
             classificationList,
             currentYear,
@@ -226,8 +226,6 @@ validate.checkUpdateInventoryData = async (req, res, next) => {
     }
     next()
 }
-
-
 
 
 module.exports = validate

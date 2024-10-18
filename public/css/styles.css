@@ -140,6 +140,10 @@ a {
 }
 
 .warning {
+  color: var(--primary-color-two-darker);
+}
+
+.text-warning {
   color: var(--primary-color-two);
 }
 
@@ -575,6 +579,16 @@ div .picture-card a {
   border-radius: 5px;
 }
 
+.forms fieldset {
+  border-radius: 5px;
+}
+
+.forms legend {
+  font-size: 1.2em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
 .forms label {
   font-size: 1.2em;
 }
@@ -627,7 +641,7 @@ input:required:valid {
 
 .password-and-show-btn {
   display: grid;
-  grid-template-columns: .8fr .2fr;
+  grid-template-columns: 1fr .1fr;
 }
 
 .forms .form-note {
@@ -652,6 +666,19 @@ input:required:valid {
   font-weight: bold;
   padding: var(--base-padding);
   text-align: center;
+}
+
+/* *****************************************
+********** Account Update Styling **********
+*******************************************/
+#update-account-info-form {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+#update-account-password-form {
+ border-top-left-radius: 0;
+ border-top-right-radius: 0;
 }
 
 
@@ -702,6 +729,31 @@ input:required:valid {
 .error-humor {
   width: 100%;
   height: auto;
+}
+
+/* *****************************************
+******** USER DASHBOARD STYLING ************
+***************************************** */
+.my-dashboard-background {
+  background-color: var(--light-transparency);
+  width: 100%;
+  height: fit-content;
+}
+.my-dashboard {
+  background-color: var(--dark-transparency);
+  padding: var(--base-padding);
+  width: 100%;
+  height: fit-content;
+  min-height: 50vh;
+}
+
+.my-dashboard h2 {
+  margin: 0;
+  padding: 0;
+}
+
+.my-dashboard h3 {
+  font-family: var(--paragraph-font);
 }
 
 

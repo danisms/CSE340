@@ -12,20 +12,41 @@ router.get("/type/:classificationId", utilities.handleErrors(invController.build
 router.get("/detail/:inventoryId", utilities.handleErrors(invController.buildByInventoryId));
 
 // Route to vehicle management
-router.get("/", utilities.handleErrors(invController.buildVehicleManagement));
+router.get("/", 
+    utilities.checkAccountPrivilege, 
+    utilities.handleErrors(invController.buildVehicleManagement)
+);
 
 // Route to add new classification
-router.get("/add-classification", utilities.handleErrors(invController.buildAddClassification));
+router.get("/add-classification",
+    utilities.checkAccountPrivilege, 
+    utilities.handleErrors(invController.buildAddClassification)
+);
 
 // Route to add new vehicle
-router.get("/add-vehicle", utilities.handleErrors(invController.buildAddVehicle));
+router.get("/add-vehicle", 
+    utilities.checkAccountPrivilege,
+    utilities.handleErrors(invController.buildAddVehicle)
+);
 
 // Route to get inventory by classification_id
-router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON));
+router.get("/getInventory/:classification_id",
+    utilities.checkAccountPrivilege,
+    utilities.handleErrors(invController.getInventoryJSON)
+);
 
 // Route to modify and inventory by inventory_id
-router.get("/edit/:inventory_id", utilities.handleErrors(invController.buildEditInventory));
+router.get("/edit/:inventory_id",
+    utilities.checkAccountPrivilege,
+    utilities.handleErrors(invController.buildEditInventory)
+);
 
+
+// Route to delete and inventory by inventory_id
+router.get("/delete/:inventory_id",
+    utilities.checkAccountPrivilege,
+    utilities.handleErrors(invController.buildDeleteInventory)
+);
 
 // Route to process add classification
 router.post(
@@ -50,5 +71,12 @@ router.post(
     managementValidation.checkUpdateInventoryData,
     utilities.handleErrors(invController.updateInventory)
 )
+
+// Route to process vehicle (inventory) delete
+router.post(
+    '/process-delete-vehicle',
+    utilities.handleErrors(invController.deleteInventory)
+)
+
 
 module.exports = router;

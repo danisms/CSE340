@@ -42,6 +42,51 @@ async function getAccountByEmail(account_email) {
 }
 
 
+/* ****************************************************************
+* ******* Get account data using account_id **********************
+******************************************************************/
+async function getAnAccount(account_id) {
+    try {
+        // using a prepare statement
+        const query = {
+            name: 'get-an-account',
+            text: 'SELECT * FROM public.account WHERE account_id = $1',
+            values: [account_id]
+        }
+        const data = await pool.query(query)
+        return data.rows[0]
+    } catch (error) {
+        console.error("getAnAccount error " + error)
+    }
+}
 
 
-module.exports = { registerAccount, checkExistingEmail, getAccountByEmail }
+/* ******************************************
+* Update An Account Info
+* **************************************** */
+async function updateAccountInfo(account_firstname, account_lastname, account_email, account_id) {
+    try {
+        const sql = "UPDATE public.account SET account_firstname = $1, account_lastname = $2, account_email = $3 WHERE account_id = $4 RETURNING *;"
+        const data = await pool.query(sql, [account_firstname.toLowerCase(), account_lastname.toLowerCase(), account_email.toLowerCase(), account_id])
+        return data.rows[0]
+    } catch (error) {
+        console.error("model error: " + error)
+    }
+}
+
+/* ******************************************
+* Update An Account Info
+* **************************************** */
+async function updatePassword(hashedPassword, account_id) {
+    try {
+        const sql = "UPDATE public.account SET account_password = $1 WHERE account_id = $2 RETURNING *;"
+        const data = await pool.query(sql, [hashedPassword, account_id])
+        return data.rows[0]
+    } catch (error) {
+        console.error("model error: " + error)
+    }
+}
+
+
+
+module.exports = { registerAccount, checkExistingEmail, getAccountByEmail, getAnAccount, updateAccountInfo, updatePassword }

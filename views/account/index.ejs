@@ -1,11 +1,20 @@
 <%# EJS Check Title and display view %>
 <% if (title) { %>
-    <h1 class="form-title"><%= title %></h1>
+    <h1><%= title %></h1>
 <% } else {
     res.redirect('/')
 } %>
 
-<div class="my-dashboard">
-    <%- messages() %>
-    <h2>You're logged in</h2>
+<div class="my-dashboard-background">
+    <div class="my-dashboard">
+        <%- messages() %>
+        <h2>Welcome <%= locals.accountData.account_firstname %></h2>
+        <h3><a href="/account/update-account/<%= locals.accountData.account_id %>" class="link-btn">Update Account</a></h3>
+
+        <%# Add Inventory Management Link when user account is an admin or employee %>
+        <% const accountType = locals.accountData.account_type.toLowerCase() %>
+        <% if (accountType == 'admin' || accountType == 'employee') { %>
+            <h3><a href="/inv" class="link-btn">Inventory Management</a></h3>
+        <% } %>
+    </div>
 </div>

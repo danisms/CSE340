@@ -1,0 +1,44 @@
+<%# EJS Check Title and display view %>
+<% if (title) { %>
+    <h1 class="form-title"><%= title %></h1>
+<% } else {
+    res.redirect('/')
+} %>
+
+<div class="form-container">
+    <%- messages() %>
+    <% if (errors) { %>
+        <ul class="notice">
+            <% errors.array().forEach(error => { %>
+                <% if (error.msg.toLowerCase() != 'invalid value') { %>
+                    <li><%= error.msg %></li>
+                <% } %>
+            <% }) %>
+        </ul>
+    <% } %> 
+    <form action="/inv/process-delete-vehicle" method="post" id="deleteForm" class="forms">
+        <label>
+            Make
+            <input type="text" readonly name="inv_make" id="invMake" value="<%= locals.inv_make %>" required>
+        </label>
+        <label>
+            Model
+            <input type="text" readonly name="inv_model" id="invModel" value="<%= locals.inv_model %>" required>
+        </label>
+        <label>
+            Price
+            <input type="number" readonly name="inv_price" id="invPrice" value="<%= locals.inv_price %>" min="1" step="0.1" required>
+        </label>
+        <label>
+            Year
+            <input type="number" readonly name="inv_year" min="1900" max="<%= currentYear %>" step="1" id="invYear" value="<%= locals.inv_year %>" required>
+        </label>
+        <input type="submit" class="submit-btn" value="DELETE VEHICLE">
+        <p>Confirm Deletion - The delete is permanent.</p>
+
+        <input type="hidden" name="inv_id"
+        <% if(locals.inv_id) { %> 
+            value="<%= locals.inv_id  %>"
+        <% } %>>
+    </form>
+</div>
