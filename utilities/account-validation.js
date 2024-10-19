@@ -131,6 +131,14 @@ validate.checkLoginData = async (req, res, next) => {
     next()
 }
 
+validate.getCurrentAccountInfo = async (req, res, next) => {
+    const { account_id } = req.body
+    const userId = parseInt(account_id)
+    const accountData = await accountModel.getAnAccount(userId)
+
+    req.currentAccountInfo = accountData  // add current account information to the request object
+    next()
+}
 /* *************************************
 * Update User Info Data Validation Rules
 * *********************************** */
@@ -152,7 +160,7 @@ validate.updateInfoRules = () => {
         .isLength({ min: 1})
         .withMessage("Please provide a last name."), // on error this message is sent.
 
-        // valid email is required and cannot already exit in the DB
+        // validate Email (valid email is required and cannot already exit in the DB)
         body("account_email")
         .trim()
         .escape()
@@ -160,12 +168,18 @@ validate.updateInfoRules = () => {
         .isEmail()
         .normalizeEmail()  // refer to validator.js docs
         .withMessage("A valid email is required.")
-        .custom(async (account_email) => {
+        .custom(async (account_email, { req }) => {
+            const currentUserEmail = req.currentAccountInfo.account_email
+
+            if (account_email == currentUserEmail) {
+                return true
+            }
+
             const emailExists = await accountModel.checkExistingEmail(account_email)
             if (emailExists) {
                 throw new Error("Email already exists. Please use a different email")
             }
-        }),
+        })
     ]
 }
 
@@ -173,12 +187,14 @@ validate.updateInfoRules = () => {
 * Check data and return error or continue to update
 * ******************************************************** */
 validate.checkUpdateInfoData = async (req, res, next) => {
-    const { account_firstname, account_lastname, account_email, account_id} = req.body
+    const { account_firstname, account_lastname, account_email, account_id } = req.body
+    const currentAccountInfo = req.currentAccountInfo
+
     let errors = []
     errors = validationResult(req)
     if (!errors.isEmpty()) {
         let nav = await utilities.getNav()
-        const profileName = `${account_firstname} ${account_lastname}`;
+        const profileName = `${currentAccountInfo.account_firstname} ${currentAccountInfo.account_lastname}`;
         res.render("account/update-account", {
             errors,
             description: `Update user account)`,

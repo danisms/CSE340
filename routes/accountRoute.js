@@ -40,6 +40,7 @@ router.post (
 // Route to process account-info update
 router.post(
     '/process-account-info-update',
+    regValidate.getCurrentAccountInfo,
     regValidate.updateInfoRules(),
     regValidate.checkUpdateInfoData,
     utilities.handleErrors(accountController.updateAccountInfo)

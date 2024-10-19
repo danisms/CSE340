@@ -5,7 +5,7 @@ const pool = require("../database/")
 * *************************** */
 async function registerAccount(account_firstname, account_lastname, account_email, account_password) {
     try {
-        const sql = "INSERT INTO account (account_firstname, account_lastname, account_email, account_password, account_type) VALUES ($1, $2, $3, $4, 'Client') RETURNING *;"
+        const sql = "INSERT INTO public.account (account_firstname, account_lastname, account_email, account_password, account_type) VALUES ($1, $2, $3, $4, 'Client') RETURNING *;"
         return await pool.query(sql, [account_firstname.toLowerCase(), account_lastname.toLowerCase(), account_email.toLowerCase(), account_password])
     } catch (error) {
         return error.message
@@ -18,7 +18,7 @@ async function registerAccount(account_firstname, account_lastname, account_emai
 * *************************** */
 async function checkExistingEmail(account_email) {
     try {
-        const sql = "SELECT account_id FROM account WHERE account_email = $1"
+        const sql = "SELECT account_id FROM public.account WHERE account_email = $1"
         const email = await pool.query(sql, [account_email.toLowerCase()])
         return email.rowCount
     } catch (error) {
@@ -32,7 +32,7 @@ async function checkExistingEmail(account_email) {
 async function getAccountByEmail(account_email) {
     try {
         const result = await pool.query(
-            'SELECT * FROM account WHERE account_email = $1',
+            'SELECT * FROM public.account WHERE account_email = $1',
             [account_email]
         )
         return result.rows[0]
