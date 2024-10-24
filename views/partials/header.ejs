@@ -4,7 +4,11 @@
     </span>
     <div id="tools">
         <% if (locals.loggedin) { %>
-            <a href="/account/" title="Manage Your Account">Welcome <%= locals.accountData.account_firstname %></a>
+            <a href="/account/" title="Manage Your Account">
+                <div class="account-photo-holder">
+                    <img src="<%= locals.accountData.account_photo %>" alt="Photo of <%= locals.accountData.account_firstname %>">
+                </div>
+                Welcome <%= locals.accountData.account_firstname %></a>
             <a title="Click to logout" href="/account/logout">Logout</a>
         <% } else { %>
             <a title="Click to log in" href="/account/login">My Account</a>

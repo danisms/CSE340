@@ -3,6 +3,8 @@ const {body, validationResult} = require("express-validator")
 const accountModel = require("../models/account-model")
 const validate = {}
 
+const formidable = require('formidable')  // for validating multipart form data
+
 
 /* *************************************
 * Registration Data Validation Rules
@@ -182,6 +184,76 @@ validate.updateInfoRules = () => {
         })
     ]
 }
+
+
+validate.uploadPhotoRule = () => {
+    return [
+       // validate photo file
+        body("account_photo")
+        .custom((value, { req }) => {
+            if (!req.files.account_photo[0]) {
+                throw new Error('No file uploaded. File is required')
+            }
+
+            // get account_photo file
+            const photoFile = req.files.account_photo[0];
+
+            // Check file type
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+            if (!allowedTypes.includes(photoFile.mimetype)) {
+                throw new Error('Only image files are allowed (jpg, png, gif, webp)' + `File Mimetype: ${req.file.mimetype}`);
+            }
+
+            // Check file size
+            const photoMaxSize = 5 * 1024 * 1024  // 5MB max photo size
+            if (photoFile.size > photoMaxSize) {
+                throw new Error(`File size is more than the max limit ${Math.floor(photoMaxSize/1000000)}`)
+            }
+
+            return true;
+        })
+    ]
+}
+
+validate.checkFileData = async (req, res, next) => {
+    // Using formidable to pares incoming form data
+    const form = new formidable.IncomingForm();
+
+    // Parse the request
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            req.flash("notice", 'Sorry, there was an error parsing form')
+            return res.redirect('/account/')
+        }
+
+        const account_id = fields.account_id[0]
+        const account_photo = files.account_photo[0]
+
+        let errors = []
+        errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            let nav = await utilities.getNav()
+            let data = await accountModel.getAnAccount(account_id)
+            const profileName = `${data.account_firstname} ${data.account_lastname}`;
+            res.render("account/update-account", {
+                errors,
+                description: `Update user account)`,
+                title: "Edit Account (" + profileName + ")",
+                nav,
+                account_id,
+                account_photo,
+
+                account_firstname: data.account_firstname,
+                account_lastname: data.account_lastname,
+                account_email: data.account_email
+            })
+            return
+        }
+        next()
+    })
+}
+
+
 
 /* **********************************************************
 * Check data and return error or continue to update

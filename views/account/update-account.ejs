@@ -18,7 +18,7 @@
     <% } %>
 
     <%# UPDATE ACCOUNT INFO FORM %>
-    <form action="/account/process-account-info-update" method="post" id="update-account-info-form" class="forms">
+    <form action="/account/process-account-info-update" method="post" id="update-account-info-form" class="forms first-form">
         <fieldset>
             <legend>Update Info</legend>
             <label>
@@ -43,8 +43,26 @@
         </fieldset>
     </form>
 
+    <%# UPDATE ACCOUNT PHOTO FORM %>
+    <form action="/account/process-account-photo-update" method="post" enctype="multipart/form-data" id="update-account-photo-form" class="forms middle-form">
+        <fieldset>
+            <legend>Update Photo</legend>
+            <label>
+                Upload Photo: 
+                <input type="file" name="account_photo" id="accountPhoto" accept="image/*" value="<%= locals.account_photo %>" required>
+            </label>
+            
+            <input type="submit" class="submit-btn" value="UPDATE">
+
+            <input type="hidden" name="account_id"
+            <% if(locals.account_id) { %> 
+                value="<%= locals.account_id  %>"
+            <% } %>>
+        </fieldset>
+    </form>
+
     <%# CHANGE ACCOUNT PASSWORD FORM %>
-    <form action="/account/process-account-password-update" method="post" id="update-account-password-form" class="forms">
+    <form action="/account/process-account-password-update" method="post" id="update-account-password-form" class="forms middle-form">
         <fieldset>
             <legend>Change Password</legend>
             <label>

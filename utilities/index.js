@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken")
 require("dotenv").config()
 // Need Modules (created by me)
 const invModel = require("../models/inventory-model")
+const accountModel = require("../models/account-model")
 const Util = {}
 
 /* ****************************************
@@ -18,6 +19,7 @@ const lightColors = ['white', 'yellow', 'silver', 'rust', 'red']
 **************************************** */
 Util.getNav = async function (req, res, next) {
     let data = await invModel.getClassifications()
+    
     console.log(data)  // for testing purpose
     let list = "<ul>"
     list += '<li><a href="/" title="Home page">Home</a></li>'
@@ -217,6 +219,7 @@ Util.checkJWTToken = (req, res, next) => {
     }
 }
 
+
 /* *******************************************
 * Middleware to check login
 * ***************************************** */
@@ -246,6 +249,36 @@ Util.checkAccountPrivilege = (req, res, next) => {
     } else {
         req.flash("notice", "Please login.")
         return res.redirect("/account/login")
+    }
+}
+
+
+/* *********************************************
+* ********** OTHER FUNCTIONS *************
+********************************************* */
+
+/* *************************************
+* Process resign request
+* *********************************** */
+Util.resignIn = (req, res) => {
+    try {
+        if (process.env.NODE_ENV === 'development') {
+            res.clearCookie("jwt", {
+                httpOnly: true,  // To prevent client-side javascript access
+                sameSite: true,  // For Protecting against CSRF attacks
+            })
+        } else {
+            res.clearCookie("jwt", {
+                httpOnly: true,  // To prevent client-side javascript access
+                secure: true,  // Make Sure Cookie is only sent through HTTPS
+                sameSite: true,  // For Protecting against CSRF attacks
+            })
+        }
+        
+        // req.flash('notice', "Please resign in")
+        res.redirect('/account/')
+    } catch (error) {
+        console.error('Logout Error: '+ error)
     }
 }
 

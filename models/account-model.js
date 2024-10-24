@@ -97,6 +97,24 @@ async function updatePassword(hashedPassword, account_id) {
     }
 }
 
+/* ******************************************
+* Update An Account Photo
+* **************************************** */
+async function updateAccountPhoto(photoPath, account_id) {
+    try {
+        // using a prepare statement
+        const query = {
+            name: 'update-account-photo',
+            text: "UPDATE public.account SET account_photo = $1 WHERE account_id = $2 RETURNING *;",
+            values: [photoPath, account_id]
+        }
+        const data = await pool.query(query)
+        return data.rows[0]
+    } catch (error) {
+        console.error("model error: " + error)
+    }
+}
 
 
-module.exports = { registerAccount, checkExistingEmail, getAccountByEmail, getAnAccount, updateAccountInfo, updatePassword }
+
+module.exports = { registerAccount, checkExistingEmail, getAccountByEmail, getAnAccount, updateAccountInfo, updateAccountPhoto, updatePassword }

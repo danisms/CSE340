@@ -2,6 +2,9 @@ const utilities = require('../utilities/')
 const accountModel = require('../models/account-model')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const formidable = require('formidable')
+const fs = require('fs');
+const path = require('path');
 require("dotenv").config()
 
 /* ***************************************
@@ -231,7 +234,7 @@ async function updatePassword(req, res) {
         hashedPassword = await bcrypt.hashSync(account_password, 10)
     } catch (error) {
         req.flash("notice", 'Sorry, there was an error changing your password.')
-        res.status(500).render("account/e", {
+        res.status(500).render("account/update-account", {
             description: `Update user account)`,
             title: "Edit Account (" + profileName + ")",
             nav,
@@ -256,4 +259,82 @@ async function updatePassword(req, res) {
 }
 
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildDashboard, buildAccountUpdateView, updateAccountInfo, updatePassword, accountLogout }
+
+/* **************************************
+* Process Account Photo Update
+* ************************************ */
+async function updateAccountPhoto(req, res, next) {
+    let nav = await utilities.getNav()
+    
+    // Using formidable to pares incoming form data
+    const form = new formidable.IncomingForm();
+
+    // Parse the request
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            req.flash("notice", 'Sorry, there was an error uploading your photo')
+            return res.redirect('/account/')
+        }
+
+        const account_id = fields.account_id[0]
+
+        const data = await accountModel.getAnAccount(account_id)
+        const profileName = `${data.account_firstname} ${data.account_lastname}`;
+
+        form.uploadDir = `public/images/account/user-${account_id}`;  // set directory path for upload
+        form.dbUploadDir = `/images/account/user-${account_id}`;
+        form.keepExtensions = true;  // keep form file extensions
+
+        // create directory if it doesn't exist
+        if (!fs.existsSync(form.uploadDir)) {
+            fs.mkdirSync(form.uploadDir, { recursive: true });
+        } else {
+
+        }
+
+        // get file
+        const file = files.account_photo[0];  // get form file with the name of the file input
+
+        // Rename and move file to uploads directory
+        let fileNewName;
+        try {
+            const incomingFileNameAndExtension = file.originalFilename.split('.');
+            const incomingFileName = incomingFileNameAndExtension[0].length > 10 ? incomingFileNameAndExtension[0].slice(0, 10) : incomingFileNameAndExtension[0];
+            const incomingFileExtension = incomingFileNameAndExtension[incomingFileNameAndExtension.length - 1];
+            fileNewName = `${Date.now()}-${incomingFileName}.${incomingFileExtension}`;
+        } catch (err) {
+            res.status(400).send(err);
+        }
+
+        const newPath = path.join(form.uploadDir, fileNewName);
+        const newDBPath = path.join(form.dbUploadDir, fileNewName);
+
+
+        // move uploaded file form temporal directory (file.filepath) to upload permanent directory (newPath)
+        fs.rename(file.filepath, newPath, (err) => {
+            if (err) {
+                req.flash('notice', 'Error saving file. Please try again.');
+                return res.redirect(`/account/update-account/${account_id}`);
+            }
+        })
+
+        // If Success
+        // update the account_photo in db with the new file path to the database
+        const updateResult = await accountModel.updateAccountPhoto(newDBPath, account_id)
+
+        if (updateResult) {
+            req.flash ("notice", `Your account photo was updated successfully.`)
+            next()
+        } else {
+            req.flash ("notice", `Sorry ${profileName.slice(0, 1).toUpperCase()}${profileName.slice(1)}, your password update failed.`)
+            res.status(501).render("account/update-account", {
+                description: `Update user account)`,
+                title: "Edit Account (" + profileName + ")",
+                nav,
+                errors: null,
+            })
+        }
+    })
+}
+
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildDashboard, buildAccountUpdateView, updateAccountInfo, updateAccountPhoto, updatePassword, accountLogout }

@@ -257,6 +257,20 @@ footer a {
   font-weight: bold;
 }
 
+.account-photo-holder {
+  width: 50px;
+  height: 50px;
+  float: right;
+  overflow: hidden;
+  border-radius: 100%;
+  margin-left: var(--base-margin);
+}
+
+.account-photo-holder img {
+  width: 100%;
+  height: auto;
+}
+
 /***** Navigation ********/
 nav {
   width: 100%;
@@ -671,12 +685,12 @@ input:required:valid {
 /* *****************************************
 ********** Account Update Styling **********
 *******************************************/
-#update-account-info-form {
+.first-form {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-#update-account-password-form {
+.middle-form {
  border-top-left-radius: 0;
  border-top-right-radius: 0;
 }

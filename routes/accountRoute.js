@@ -46,6 +46,15 @@ router.post(
     utilities.handleErrors(accountController.updateAccountInfo)
 )
 
+// Route to process account-photo update
+router.post(
+    '/process-account-photo-update',
+    regValidate.uploadPhotoRule(),
+    regValidate.checkFileData,
+    utilities.handleErrors(accountController.updateAccountPhoto),
+    utilities.handleErrors(utilities.resignIn)  // for updating account info
+)
+
 
 // Route to process change password update
 router.post(
