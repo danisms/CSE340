@@ -227,7 +227,7 @@ validate.checkFileData = async (req, res, next) => {
         }
 
         const account_id = fields.account_id[0]
-        const account_photo = files.account_photo[0]
+        const account_photo = files.account_photo
 
         let errors = []
         errors = validationResult(req)

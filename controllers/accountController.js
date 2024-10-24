@@ -264,7 +264,7 @@ async function updatePassword(req, res) {
 * Process Account Photo Update
 * ************************************ */
 async function updateAccountPhoto(req, res, next) {
-    let nav = await utilities.getNav()
+    let nav = await utilities.getNav();
     
     // Using formidable to pares incoming form data
     const form = new formidable.IncomingForm();
@@ -272,13 +272,13 @@ async function updateAccountPhoto(req, res, next) {
     // Parse the request
     form.parse(req, async (err, fields, files) => {
         if (err) {
-            req.flash("notice", 'Sorry, there was an error uploading your photo')
-            return res.redirect('/account/')
+            req.flash("notice", 'Sorry, there was an error uploading your photo');
+            return res.redirect('/account/');
         }
 
-        const account_id = fields.account_id[0]
+        const account_id = fields.account_id[0];
 
-        const data = await accountModel.getAnAccount(account_id)
+        const data = await accountModel.getAnAccount(account_id);
         const profileName = `${data.account_firstname} ${data.account_lastname}`;
 
         form.uploadDir = `public/images/account/user-${account_id}`;  // set directory path for upload
@@ -289,7 +289,21 @@ async function updateAccountPhoto(req, res, next) {
         if (!fs.existsSync(form.uploadDir)) {
             fs.mkdirSync(form.uploadDir, { recursive: true });
         } else {
+            // REMOVE ALL FILES IN DIRECTORY
+            // read directory
+            const allFiles = fs.readdirSync(form.uploadDir);
 
+            // loop through each file and delete the file in directory
+            allFiles.forEach(file => {
+                const filePath = path.join(form.uploadDir, file);
+
+                try {
+                    fs.unlinkSync(filePath);  // delete file synchronously
+                    console.log(`File: ${filePath} Deleted Successfully`);  // for testing purpose
+                } catch (err) {
+                    console.error(`Error Deleting File (${filePath}) : ${err}`);
+                }
+            });
         }
 
         // get file
