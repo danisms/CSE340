@@ -251,3 +251,10 @@ WHERE inv_id = 10;
 UPDATE public.inventory
 SET inv_image = REPLACE(inv_image, '/images', '/images/vehicles'),
     inv_thumbnail = REPLACE(inv_thumbnail, '/images', '/images/vehicles');
+
+
+-- -- INSERT ACCOUNT USERS
+-- INSERT INTO public.account (account_firstname, account_lastname, account_email, account_password, account_type)
+-- VALUES ('Basic', 'Client', 'basic@340.edu', 'I@mABas1cCl!3nt', 'Client'),
+-- ('Happy', 'Employee', 'happy@340.edu', 'I@mAnEmpl0y33', 'Employee'),
+-- ('Manager', 'User', 'manager@340.edu', 'I@mAnAdm!n1strat0r', 'Admin');
