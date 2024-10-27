@@ -265,90 +265,79 @@ async function updatePassword(req, res) {
 * ************************************ */
 async function updateAccountPhoto(req, res, next) {
     let nav = await utilities.getNav();
-    
-    // Using formidable to pares incoming form data
-    const form = new formidable.IncomingForm();
+    console.log('I just get nav in account controller');  // for testing purpose
 
-    // Parse the request
-    form.parse(req, async (err, fields, files) => {
-        if (err) {
-            req.flash("notice", 'Sorry, there was an error uploading your photo');
-            return res.redirect('/account/');
-        }
+    const form = req.form;
+    const account_id = req.body.account_id[0];
+    const photoFile = req.files.account_photo[0];
 
-        const account_id = fields.account_id[0];
+    const data = await accountModel.getAnAccount(account_id);
+    const profileName = `${data.account_firstname} ${data.account_lastname}`;
 
-        const data = await accountModel.getAnAccount(account_id);
-        const profileName = `${data.account_firstname} ${data.account_lastname}`;
+    form.uploadDir = `public/images/account/user-${account_id}`;  // set directory path for upload
+    form.dbUploadDir = `/images/account/user-${account_id}`;
+    form.keepExtensions = true;  // keep form file extensions
 
-        form.uploadDir = `public/images/account/user-${account_id}`;  // set directory path for upload
-        form.dbUploadDir = `/images/account/user-${account_id}`;
-        form.keepExtensions = true;  // keep form file extensions
+    // create directory if it doesn't exist
+    if (!fs.existsSync(form.uploadDir)) {
+        fs.mkdirSync(form.uploadDir, { recursive: true });
+    } else {
+        // REMOVE ALL FILES IN DIRECTORY
+        // read directory
+        const allFiles = fs.readdirSync(form.uploadDir);
 
-        // create directory if it doesn't exist
-        if (!fs.existsSync(form.uploadDir)) {
-            fs.mkdirSync(form.uploadDir, { recursive: true });
-        } else {
-            // REMOVE ALL FILES IN DIRECTORY
-            // read directory
-            const allFiles = fs.readdirSync(form.uploadDir);
+        // loop through each file and delete the file in directory
+        allFiles.forEach(file => {
+            const filePath = path.join(form.uploadDir, file);
 
-            // loop through each file and delete the file in directory
-            allFiles.forEach(file => {
-                const filePath = path.join(form.uploadDir, file);
-
-                try {
-                    fs.unlinkSync(filePath);  // delete file synchronously
-                    console.log(`File: ${filePath} Deleted Successfully`);  // for testing purpose
-                } catch (err) {
-                    console.error(`Error Deleting File (${filePath}) : ${err}`);
-                }
-            });
-        }
-
-        // get file
-        const file = files.account_photo[0];  // get form file with the name of the file input
-
-        // Rename and move file to uploads directory
-        let fileNewName;
-        try {
-            const incomingFileNameAndExtension = file.originalFilename.split('.');
-            const incomingFileName = incomingFileNameAndExtension[0].length > 10 ? incomingFileNameAndExtension[0].slice(0, 10) : incomingFileNameAndExtension[0];
-            const incomingFileExtension = incomingFileNameAndExtension[incomingFileNameAndExtension.length - 1];
-            fileNewName = `${Date.now()}-${incomingFileName}.${incomingFileExtension}`;
-        } catch (err) {
-            res.status(400).send(err);
-        }
-
-        const newPath = path.join(form.uploadDir, fileNewName);
-        const newDBPath = path.join(form.dbUploadDir, fileNewName);
-
-
-        // move uploaded file form temporal directory (file.filepath) to upload permanent directory (newPath)
-        fs.rename(file.filepath, newPath, (err) => {
-            if (err) {
-                req.flash('notice', 'Error saving file. Please try again.');
-                return res.redirect(`/account/update-account/${account_id}`);
+            try {
+                fs.unlinkSync(filePath);  // delete file synchronously
+                console.log(`File: ${filePath} Deleted Successfully`);  // for testing purpose
+            } catch (err) {
+                console.error(`Error Deleting File (${filePath}) : ${err}`);
             }
-        })
+        });
+    }
 
-        // If Success
-        // update the account_photo in db with the new file path to the database
-        const updateResult = await accountModel.updateAccountPhoto(newDBPath, account_id)
+    // Rename and move file to uploads directory
+    let fileNewName;
+    try {
+        const incomingFileNameAndExtension = photoFile.originalFilename.split('.');
+        const incomingFileName = incomingFileNameAndExtension[0].length > 10 ? incomingFileNameAndExtension[0].slice(0, 10) : incomingFileNameAndExtension[0];
+        const incomingFileExtension = incomingFileNameAndExtension[incomingFileNameAndExtension.length - 1];
+        fileNewName = `${Date.now()}-${incomingFileName}.${incomingFileExtension}`;
+    } catch (err) {
+        res.status(400).send(err);
+    }
 
-        if (updateResult) {
-            req.flash ("notice", `Your account photo was updated successfully.`)
-            next()
-        } else {
-            req.flash ("notice", `Sorry ${profileName.slice(0, 1).toUpperCase()}${profileName.slice(1)}, your password update failed.`)
-            res.status(501).render("account/update-account", {
-                description: `Update user account)`,
-                title: "Edit Account (" + profileName + ")",
-                nav,
-                errors: null,
-            })
+    const newPath = path.join(form.uploadDir, fileNewName);
+    const newDBPath = path.join(form.dbUploadDir, fileNewName);
+
+
+    // move uploaded file form temporal directory (file.filepath) to upload permanent directory (newPath)
+    fs.rename(photoFile.filepath, newPath, (err) => {
+        if (err) {
+            req.flash('notice', 'Error saving file. Please try again.');
+            return res.redirect(`/account/update-account/${account_id}`);
         }
     })
+
+    // If Success
+    // update the account_photo in db with the new file path to the database
+    const updateResult = await accountModel.updateAccountPhoto(newDBPath, account_id)
+
+    if (updateResult) {
+        req.flash ("notice", `Your account photo was updated successfully.`)
+        next()
+    } else {
+        req.flash ("notice", `Sorry ${profileName.slice(0, 1).toUpperCase()}${profileName.slice(1)}, your password update failed.`)
+        res.status(501).render("account/update-account", {
+            description: `Update user account)`,
+            title: "Edit Account (" + profileName + ")",
+            nav,
+            errors: null,
+        })
+    }
 }
 
 module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildDashboard, buildAccountUpdateView, updateAccountInfo, updateAccountPhoto, updatePassword, accountLogout }

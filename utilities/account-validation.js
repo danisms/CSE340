@@ -141,6 +141,7 @@ validate.getCurrentAccountInfo = async (req, res, next) => {
     req.currentAccountInfo = accountData  // add current account information to the request object
     next()
 }
+
 /* *************************************
 * Update User Info Data Validation Rules
 * *********************************** */
@@ -186,69 +187,106 @@ validate.updateInfoRules = () => {
 }
 
 
+/* *************************************
+* Update User Photo Validation Rules
+* *********************************** */
 validate.uploadPhotoRule = () => {
     return [
        // validate photo file
         body("account_photo")
         .custom((value, { req }) => {
-            if (!req.files.account_photo[0]) {
-                throw new Error('No file uploaded. File is required')
+            if (!req.headers["content-type"].includes("multipart/form-data")) {
+                console.error('Form is not a multipart/form-data');  // for debugging purpose
+                throw new Error('Form is not a multipart/form-data.');
             }
-
-            // get account_photo file
-            const photoFile = req.files.account_photo[0];
-
-            // Check file type
-            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
-            if (!allowedTypes.includes(photoFile.mimetype)) {
-                throw new Error('Only image files are allowed (jpg, png, gif, webp)' + `File Mimetype: ${req.file.mimetype}`);
-            }
-
-            // Check file size
-            const photoMaxSize = 5 * 1024 * 1024  // 5MB max photo size
-            if (photoFile.size > photoMaxSize) {
-                throw new Error(`File size is more than the max limit ${Math.floor(photoMaxSize/1000000)}`)
-            }
-
+            console.log('I just pass the first validation')
             return true;
-        })
+        }),
     ]
 }
 
+/* ******************************************************
+* Check Data for errors and continue if none is found
+* **************************************************** */
 validate.checkFileData = async (req, res, next) => {
+    let errors = []
+    errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        let nav = await utilities.getNav()
+        res.render("account/", {
+            description: "Profile Dashboard",
+            title: "Dashboard",
+            nav,
+            errors
+        })
+    }
+
+    // Build Account Update View
+    async function buildAccUpdateView(req, res, account_id, errors=null) {
+        let nav = await utilities.getNav()
+        let data = await accountModel.getAnAccount(account_id)
+        const profileName = `${data.account_firstname} ${data.account_lastname}`;
+        res.render("account/update-account", {
+            errors,
+            description: `Update user account)`,
+            title: "Edit Account (" + profileName + ")",
+            nav,
+            account_id,
+
+            account_firstname: data.account_firstname,
+            account_lastname: data.account_lastname,
+            account_email: data.account_email
+        })
+        console.log('I am here at log!')  // for testing purpose
+        // return
+    }
+
     // Using formidable to pares incoming form data
-    const form = new formidable.IncomingForm();
+    const form = new formidable.IncomingForm({
+            allowEmptyFiles: true,  // allow incoming empty form to be parsed
+            minFileSize: 0  // allow file size of 0 byte
+        });
 
     // Parse the request
     form.parse(req, async (err, fields, files) => {
         if (err) {
+            console.error(`Form parsing error: ${err}`)  // for debugging purpose
             req.flash("notice", 'Sorry, there was an error parsing form')
             return res.redirect('/account/')
         }
 
         const account_id = fields.account_id[0]
-        const account_photo = files.account_photo
 
-        let errors = []
-        errors = validationResult(req)
-        if (!errors.isEmpty()) {
-            let nav = await utilities.getNav()
-            let data = await accountModel.getAnAccount(account_id)
-            const profileName = `${data.account_firstname} ${data.account_lastname}`;
-            res.render("account/update-account", {
-                errors,
-                description: `Update user account)`,
-                title: "Edit Account (" + profileName + ")",
-                nav,
-                account_id,
-                account_photo,
+        // VALIDATE DATA
+        // get account_photo file
+        const photoFile = files.account_photo[0];
 
-                account_firstname: data.account_firstname,
-                account_lastname: data.account_lastname,
-                account_email: data.account_email
-            })
-            return
+        // Check if file has been uploaded
+        if (!photoFile || photoFile.size == 0) {
+            req.flash("notice", 'No file was upload. Please upload a valid file.');
+            return buildAccUpdateView(req, res, account_id)
         }
+
+        // Check file type
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+        if (!allowedTypes.includes(photoFile.mimetype)) {
+            req.flash("notice", `Only image files are allowed (jpg, png, gif, webp). \nFile Type: ${photoFile.mimetype.split('/')[0]} (${photoFile.mimetype.split('/')[1]})`);
+            return buildAccUpdateView(req, res, account_id)
+        }
+
+        // Check file size
+        const photoMaxSize = 3 * 1024 * 1024  // 3MB max photo size
+        if (photoFile.size > photoMaxSize) {
+            req.flash("notice", `File size is more than the max limit of ${Math.floor(photoMaxSize/1000000)} Mb`);
+            return buildAccUpdateView(req, res, account_id)
+        }
+
+        console.log("I found no error about to move to next()");  // for testing purpose
+
+        // send data to body
+        req.form = form;
+        req.body = fields;
+        req.files = files;
         next()
     })
 }
