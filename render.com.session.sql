@@ -12,9 +12,9 @@
 --     CONSTRAINT account_pkey PRIMARY KEY (account_id)
 -- );
 
-SELECT * FROM account;
+UPDATE account SET account_type = 'Admin' WHERE account_id = 1;
 
--- UPDATE account SET account_type = 'Employee' WHERE account_id = 3;
+SELECT * FROM account;
 
 -- DELETE FROM account WHERE account_id > 1;
 

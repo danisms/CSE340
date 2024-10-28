@@ -10,7 +10,7 @@
             "server": "localhost",
             "driver": "PostgreSQL",
             "name": "render.com",
-            "connectString": "postgresql://danism:SVwt1MJPbxOFweE9qq06lzxteiwJhO7U@dpg-crrr6mtds78s73ds9dhg-a.frankfurt-postgres.render.com/moto_db_zh0b"
+            "connectString": "postgresql://danism:enldgUFaGt1QVaAhiRUiTPIzHNCHOZqg@dpg-csfkuvhu0jms73fh5o40-a.frankfurt-postgres.render.com/moto_db_2"
         }
     ],
     "cSpell.words": [
