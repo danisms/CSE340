@@ -342,8 +342,6 @@ async function updateAccountPhoto(req, res, next) {
             fs.unlink(photoFile.filepath, (err) => {
                 if (err) {
                     console.error(`Failed to remove temporary file: ${err}`);
-                } else {
-                    console.log('Temp File removed successfully');
                 }
             })
         }
