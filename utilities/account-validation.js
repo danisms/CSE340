@@ -196,10 +196,10 @@ validate.uploadPhotoRule = () => {
         body("account_photo")
         .custom((value, { req }) => {
             if (!req.headers["content-type"].includes("multipart/form-data")) {
-                console.error('Form is not a multipart/form-data');  // for debugging purpose
+                // console.error('Form is not a multipart/form-data');  // for debugging purpose
                 throw new Error('Form is not a multipart/form-data.');
             }
-            console.log('I just pass the first validation')
+            // console.log('I just pass the first validation')  // for debugging purpose
             return true;
         }),
     ]
@@ -237,7 +237,7 @@ validate.checkFileData = async (req, res, next) => {
             account_lastname: data.account_lastname,
             account_email: data.account_email
         })
-        console.log('I am here at log!')  // for testing purpose
+        // console.log('I am here at log!')  // for testing purpose
         // return
     }
 
@@ -281,7 +281,7 @@ validate.checkFileData = async (req, res, next) => {
             return buildAccUpdateView(req, res, account_id)
         }
 
-        console.log("I found no error about to move to next()");  // for testing purpose
+        // console.log("I found no error about to move to next()");  // for testing purpose
 
         // send data to body
         req.form = form;

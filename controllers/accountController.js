@@ -292,7 +292,7 @@ async function updateAccountPhoto(req, res, next) {
 
             try {
                 fs.unlinkSync(filePath);  // delete file synchronously
-                console.log(`File: ${filePath} Deleted Successfully`);  // for testing purpose
+                // console.log(`File: ${filePath} Deleted Successfully`);  // for testing purpose
             } catch (err) {
                 console.error(`Error Deleting File (${filePath}) : ${err}`);
             }
@@ -315,29 +315,29 @@ async function updateAccountPhoto(req, res, next) {
 
 
     // move uploaded file form temporal directory (file.filepath) to upload permanent directory (newPath)
-    fs.rename(photoFile.filepath, newPath, (err) => {
+    fs.rename(photoFile.filepath, newPath, async (err) => {
         if (err) {
             req.flash('notice', 'Error saving file. Please try again.');
             return res.redirect(`/account/update-account/${account_id}`);
+        } else {
+            // If Success
+            // update the account_photo in db with the new file path to the database
+            const updateResult = await accountModel.updateAccountPhoto(newDBPath, account_id)
+
+            if (updateResult) {
+                req.flash ("notice", `Your account photo was updated successfully.`)
+                next()
+            } else {
+                req.flash ("notice", `Sorry ${profileName.slice(0, 1).toUpperCase()}${profileName.slice(1)}, your account photo update failed.`)
+                res.status(501).render("account/update-account", {
+                    description: `Update user account)`,
+                    title: "Edit Account (" + profileName + ")",
+                    nav,
+                    errors: null,
+                })
+            }
         }
     })
-
-    // If Success
-    // update the account_photo in db with the new file path to the database
-    const updateResult = await accountModel.updateAccountPhoto(newDBPath, account_id)
-
-    if (updateResult) {
-        req.flash ("notice", `Your account photo was updated successfully.`)
-        next()
-    } else {
-        req.flash ("notice", `Sorry ${profileName.slice(0, 1).toUpperCase()}${profileName.slice(1)}, your password update failed.`)
-        res.status(501).render("account/update-account", {
-            description: `Update user account)`,
-            title: "Edit Account (" + profileName + ")",
-            nav,
-            errors: null,
-        })
-    }
 }
 
 module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildDashboard, buildAccountUpdateView, updateAccountInfo, updateAccountPhoto, updatePassword, accountLogout }
