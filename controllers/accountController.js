@@ -2,7 +2,7 @@ const utilities = require('../utilities/')
 const accountModel = require('../models/account-model')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const formidable = require('formidable')
+// const formidable = require('formidable')
 const fs = require('fs');
 const path = require('path');
 require("dotenv").config()
