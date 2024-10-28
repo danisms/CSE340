@@ -265,7 +265,7 @@ async function updatePassword(req, res) {
 * ************************************ */
 async function updateAccountPhoto(req, res, next) {
     let nav = await utilities.getNav();
-    console.log('I just get nav in account controller');  // for testing purpose
+    // console.log('I just get nav in account controller');  // for testing purpose
 
     const form = req.form;
     const account_id = req.body.account_id[0];
@@ -315,9 +315,9 @@ async function updateAccountPhoto(req, res, next) {
 
 
     // move uploaded file form temporal directory (file.filepath) to upload permanent directory (newPath)
-    fs.rename(photoFile.filepath, newPath, async (err) => {
+    fs.copyFile(photoFile.filepath, newPath, async (err) => {
         if (err) {
-            console.error(`Error Saving File: ${err}`);  // for debugging purpose
+            console.error(`Error Copying File: ${err}`);  // for debugging purpose
             req.flash('notice', 'Error saving file. Please try again.');
             return res.redirect(`/account/update-account/${account_id}`);
         } else {
@@ -337,6 +337,15 @@ async function updateAccountPhoto(req, res, next) {
                     errors: null,
                 })
             }
+
+            // Remove the temp file (uploaded file in temp directory) from temporary directory
+            fs.unlink(photoFile.filepath, (err) => {
+                if (err) {
+                    console.error(`Failed to remove temporary file: ${err}`);
+                } else {
+                    console.log('Temp File removed successfully');
+                }
+            })
         }
     })
 }
